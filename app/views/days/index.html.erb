@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Days" %>
+
+<h1>Days</h1>
+
+<div id="days">
+  <% @days.each do |day| %>
+    <%= render day %>
+    <p>
+      <%= link_to "Show this day", day %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New day", new_day_path %>
