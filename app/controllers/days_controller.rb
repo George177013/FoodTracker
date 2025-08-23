@@ -3,7 +3,7 @@ class DaysController < ApplicationController
 
   # GET /days or /days.json
   def index
-    @days = Day.all
+    @days = Current.user.days.all
   end
 
   # GET /days/1 or /days/1.json
@@ -21,7 +21,7 @@ class DaysController < ApplicationController
 
   # POST /days or /days.json
   def create
-    @day = Day.new(day_params)
+    @day = Current.user.days.new(day_params)
 
     respond_to do |format|
       if @day.save
@@ -33,6 +33,7 @@ class DaysController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /days/1 or /days/1.json
   def update
@@ -60,11 +61,11 @@ class DaysController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_day
-      @day = Day.find(params.expect(:id))
+      @day = Day.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def day_params
-      params.expect(day: [ :meal_id ])
+      params.require(:day).permit(:date)
     end
 end
