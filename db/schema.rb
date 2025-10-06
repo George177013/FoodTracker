@@ -13,6 +13,8 @@
 ActiveRecord::Schema[8.0].define(version: 2025_08_22_163240) do
   create_table "days", force: :cascade do |t|
     t.date "date", null: false
+    t.integer "calorie_goal", default: 0, null: false
+    t.integer "protein_goal", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false

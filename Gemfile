@@ -62,6 +62,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'tailwindcss-rails'
+gem "tailwindcss-rails"
 
-gem 'tailwindcss-ruby'
+gem "tailwindcss-ruby"

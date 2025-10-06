@@ -1,10 +1,35 @@
-<p style="color: green"><%= notice %></p>
+<%= turbo_frame_tag "day" do %>
+  <div class="space-y-4">
+    <div class="border-b-indigo-200 border-b-2 pb-2">
+      <h2 class="font-sans text-4xl font-bold text-indigo-500"><%= @day.date.strftime("%A") %>, <%= @day.date %></h2>
+    </div>
+    <div class="p-6 rounded-lg bg-blue-50 shadow-lg border border-blue-200">
+      <h2 class="text-2xl font-bold mb-4 text-indigo-500">Daily Goals</h2>
+      <div class="flex space-x-4">
+        <!-- Calorie Goal Input -->
+        <div class="flex flex-col">
+          <label for="calorie_goal" class="font-medium text-gray-700">Calorie Goal (kcal)</label>
+          <input
+            type="number"
+            id="calorie_goal"
+            class="rounded border border-gray-300 p-2"
+            value="<%= @day.calorie_goal %>"
+            step="100"
+          />
+        </div>
 
-<%= render @day %>
-
-<div>
-  <%= link_to "Edit this day", edit_day_path(@day) %> |
-  <%= link_to "Back to days", days_path %>
-
-  <%= button_to "Destroy this day", @day, method: :delete %>
-</div>
+        <!-- Protein Goal Input -->
+        <div class="flex flex-col">
+          <label for="protein_goal" class="font-medium text-gray-700">Protein Goal (g)</label>
+          <input
+            type="number"
+            id="protein_goal"
+            class="rounded border border-gray-300 p-2"
+            value="<%= @day.protein_goal %>"
+            step="10"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

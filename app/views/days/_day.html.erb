@@ -1,3 +1,5 @@
-<div class="border border-gray-300 rounded-lg p-3 mb-4">
-  <p class="font-sans text-xl text-neutral-600"><%= day.date.strftime("%A") %>, <%= day.date %></p>
-</div>
+<%= link_to day_path(day), data: { turbo_frame: "day" } do %>
+  <div class="border border-gray-300 rounded-lg p-3 mb-4 cursor-pointer hover:shadow-md transition">
+    <p class="font-sans text-xl text-neutral-600"><%= day.date.strftime("%A") %>, <%= day.date %></p>
+  </div>
+<% end %>
