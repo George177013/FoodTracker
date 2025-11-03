@@ -15,8 +15,15 @@ class DaysController < ApplicationController
   def update
     @day = Current.user.days.find(params[:id])
     if @day.update(day_params)
-      render :show
+      redirect_to day_path
     end
+  end
+
+  def destroy
+    @day = Current.user.days.find(params[:id])
+    @day.destroy
+
+    redirect_to days_path
   end
 
   private
