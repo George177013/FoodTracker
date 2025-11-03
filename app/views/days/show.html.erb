@@ -1,33 +1,49 @@
 <%= turbo_frame_tag "day" do %>
   <div class="space-y-4">
     <div class="border-b-indigo-200 border-b-2 pb-2">
-      <h2 class="font-sans text-4xl font-bold text-indigo-500"><%= @day.date.strftime("%A") %>, <%= @day.date %></h2>
+      <h2 class="font-sans text-4xl font-bold text-indigo-500">
+        <%= @day.date.strftime("%A") %>, <%= @day.date %>
+      </h2>
     </div>
-    <div class="p-6 rounded-lg bg-blue-50 shadow-lg border border-blue-200">
-      <h2 class="text-2xl font-bold mb-4 text-indigo-500">Daily Goals</h2>
-      <div class="flex space-x-4">
-        <!-- Calorie Goal Input -->
-        <div class="flex flex-col">
-          <label for="calorie_goal" class="font-medium text-gray-700">Calorie Goal (kcal)</label>
-          <input
-            type="number"
-            id="calorie_goal"
-            class="rounded border border-gray-300 p-2"
-            value="<%= @day.calorie_goal %>"
-            step="100"
-          />
-        </div>
 
-        <!-- Protein Goal Input -->
-        <div class="flex flex-col">
-          <label for="protein_goal" class="font-medium text-gray-700">Protein Goal (g)</label>
-          <input
-            type="number"
-            id="protein_goal"
-            class="rounded border border-gray-300 p-2"
-            value="<%= @day.protein_goal %>"
-            step="10"
-          />
+    <!-- form for daily goals -->
+    <%= form_with model: @day, data: { turbo_frame: "day" } do |f| %>
+      <div class="p-6 rounded-lg bg-blue-50 shadow-lg border border-blue-200">
+        <h3 class="text-2xl font-bold mb-4 text-indigo-500">Daily Goals</h3>
+        <div class="flex space-x-4">
+          <div class="flex flex-col flex-1">
+            <%= f.label :calorie_goal, "Calorie Goal (kcal)", class: "font-medium text-gray-700" %>
+            <%= f.number_field :calorie_goal,
+              step: 100,
+              class: "rounded border border-gray-300 p-2 bg-gray-50",
+              onchange: "this.form.requestSubmit()" %>
+          </div>
+
+          <div class="flex flex-col flex-1">
+            <%= f.label :protein_goal, "Protein Goal (g)", class: "font-medium text-gray-700" %>
+            <%= f.number_field :protein_goal,
+              step: 10,
+              class: "rounded border border-gray-300 p-2 bg-gray-50",
+              onchange: "this.form.requestSubmit()" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- summary -->
+    <div class="p-6 rounded-lg bg-violet-100 border border-violet-200">
+      <div class="flex items-center justify-center gap-8">
+        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border-gray-100">
+          <h4 class="font-sans font-medium text-lg text-gray-800">Calories</h4>
+          <p class="font-sans font-medium text-md text-gray-800">
+            <%= @day.meals.sum(:calories) %> / <%= @day.calorie_goal %> kcal
+          </p>
+        </div>
+        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border border-gray-100">
+          <h4 class="font-sans font-medium text-lg text-gray-800">Protein</h4>
+          <p class="font-sans font-medium text-md text-gray-800">
+            <%= @day.meals.sum(:protein) %> / <%= @day.protein_goal %> g
+          </p>
         </div>
       </div>
     </div>
