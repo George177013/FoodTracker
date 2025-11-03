@@ -1,6 +1,4 @@
 class DaysController < ApplicationController
-  before_action :set_day, only: %i[ show ]
-
   def index
     @days = Current.user.days.all
   end
@@ -14,8 +12,16 @@ class DaysController < ApplicationController
     @day = Current.user.days.includes(:meals).find(params[:id])
   end
 
-  private
-    def set_day
-      @day = Day.find(params[:id])
+  def update
+    @day = Current.user.days.find(params[:id])
+    if @day.update(day_params)
+      render :show
     end
+  end
+
+  private
+
+  def day_params
+    params.require(:day).permit(:calorie_goal, :protein_goal, :date)
+  end
 end
