@@ -10,6 +10,10 @@ class DaysController < ApplicationController
     redirect_to days_path
   end
 
+  def show
+    @day = Current.user.days.includes(:meals).find(params[:id])
+  end
+
   private
     def set_day
       @day = Day.find(params[:id])
