@@ -34,14 +34,50 @@
     <!-- summary -->
     <div class="p-6 rounded-lg bg-violet-100 border border-violet-200">
       <div class="flex items-center justify-center gap-8">
-        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border-gray-100">
+        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border-gray-100 flex flex-col items-center">
           <h4 class="font-sans font-medium text-lg text-gray-800">Calories</h4>
+          <%= donut_chart(
+            { "Calories" => @day.meals.sum(:calories), "Remaining" => [@day.calorie_goal - @day.meals.sum(:calories), 0].max },
+            {
+              height: '200px',
+              width: '200px',
+              class: 'box',
+              options: {
+                tooltip: { show: false },
+                animation: false,
+                color: ['rgb(255, 172, 28)', 'rgb(0, 0, 0, 0.075)'],
+                series: {
+                  labelLine: { show: false },
+                  label: { show: false },
+                  emphasis: { disabled: true },
+                }
+              }
+            }
+          ) %>
           <p class="font-sans font-medium text-md text-gray-800">
             <%= @day.meals.sum(:calories) %> / <%= @day.calorie_goal %> kcal
           </p>
         </div>
-        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border border-gray-100">
+        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border border-gray-100 flex flex-col items-center">
           <h4 class="font-sans font-medium text-lg text-gray-800">Protein</h4>
+          <%= donut_chart(
+            { "Protein" => @day.meals.sum(:protein), "Remaining" => [@day.protein_goal - @day.meals.sum(:protein), 0].max },
+            {
+              height: '200px',
+              width: '200px',
+              class: 'box',
+              options: {
+                tooltip: { show: false },
+                animation: false,
+                color: ['rgb(80, 200, 120)', 'rgb(0, 0, 0, 0.075)'],
+                series: {
+                  labelLine: { show: false },
+                  label: { show: false },
+                  emphasis: { disabled: true },
+                }
+              }
+            }
+          ) %>
           <p class="font-sans font-medium text-md text-gray-800">
             <%= @day.meals.sum(:protein) %> / <%= @day.protein_goal %> g
           </p>
