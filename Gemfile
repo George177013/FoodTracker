@@ -65,3 +65,5 @@ end
 gem "tailwindcss-rails"
 
 gem "tailwindcss-ruby"
+
+gem "rails_charts"
