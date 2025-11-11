@@ -1,0 +1,40 @@
+<div class="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
+  <%= form_with model: meal, url: update_meal_day_path(day), method: :patch, html: { class: 'space-y-3', novalidate: 'true' } do |form| %>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-4">Meal Name</label>
+        <%= form.text_field :name,
+          class: "block w-full border-b border-gray-300 text-base p-2 focus:border-indigo-500 focus:outline-none",
+          onchange: "this.form.requestSubmit()",
+          value: meal.name %>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-4">Protein (g)</label>
+        <%= form.number_field :protein,
+          class: "block w-full border-b border-gray-300 text-base p-2 focus:border-indigo-500 focus:outline-none",
+          onchange: "this.form.requestSubmit()",
+          value: meal.protein,
+          step: 10,
+          min: 0 %>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-4">Calories (kcal)</label>
+        <%= form.number_field :calories,
+          class: "block w-full border-b border-gray-300 text-base p-2 focus:border-indigo-500 focus:outline-none",
+          onchange: "this.form.requestSubmit()",
+          value: meal.calories,
+          step: 100,
+          min: 0 %>
+      </div>
+    </div>
+    <%= form.hidden_field :id, value: meal.id %>
+  <% end %>
+
+  <div class="flex justify-end mt-3">
+    <%= button_to "Delete Meal",
+      delete_meal_day_path(meal.day, meal_id: meal.id),
+      method: :delete,
+      class: "text-red-500 cursor-pointer font-medium text-sm" %>
+  </div>
+</div>

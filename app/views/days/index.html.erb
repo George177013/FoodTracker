@@ -1,23 +1,24 @@
 <% content_for :title, "Days" %>
 
 <div class="h-screen grid grid-cols-5 gap-8 p-6">
-  <div>
+  <div class="flex flex-col h-screen overflow-hidden">
     <div class="border-b-indigo-200 border-b-2 pb-2 mb-4">
       <h2 class="font-sans text-4xl font-bold text-indigo-500">Tracked Days</h2>
     </div>
-    <div>
-      <div class="flex bg-indigo-500 shadow-md rounded-lg p-3 justify-center mb-4 cursor-pointer"> 
-        <%= button_to "+ Add new day", days_path,  method: :post, class: "font-sans text-xl font-bold text-gray-100 cursor-pointer"%>
-      </div>
-      <div>
-        <% @days.order(date: :desc).each do |day| %>
-          <%= render partial: "day", locals: { day: day } %>
-        <% end %>
-      </div>
+    
+    <div class="bg-indigo-500 shadow-md rounded-lg p-3 justify-center mb-4 cursor-pointer flex mr-2"> 
+      <%= button_to "+ Add new day", days_path, method: :post, class: "font-sans text-xl font-bold text-gray-100 cursor-pointer"%>
+    </div>
+    
+    <div class="flex-1 min-h-0 overflow-y-auto pr-2">
+      <% @days.order(date: :desc).each do |day| %>
+        <%= render partial: "day", locals: { day: day } %>
+      <% end %>
     </div>
   </div>
-  <div class="col-span-4">
-    <turbo-frame id="day">
+  
+  <div class="col-span-4 h-full">
+    <turbo-frame id="day" class="h-full">
       <div class="flex items-center justify-center h-full">
         No day selected
       </div>

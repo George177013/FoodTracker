@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   resource :session
   resources :passwords, param: :token
-  resources :days
+  resources :days do
+    post "add_meal", on: :member
+    patch "update_meal", on: :member
+    delete "delete_meal", on: :member
+  end
   resources :meals
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

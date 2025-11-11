@@ -4,16 +4,17 @@
       <h2 class="font-sans text-4xl font-bold text-indigo-500">
         <%= @day.date.strftime("%A") %>, <%= @day.date %>
       </h2>
-      <%= button_to "Delete Day", day_path(@day), method: :delete, data: { turbo_frame: "_top" }, class: "bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded" %>
+      <%= button_to "Delete Day", day_path(@day), method: :delete, data: { turbo_frame: "_top" }, 
+        class: "bg-red-500 text-gray-50 font-bold py-2 px-4 rounded-lg shadow-md cursor-pointer" %>
     </div>
 
     <!-- form for daily goals -->
-    <%= form_with model: @day, data: { turbo_frame: "day" } do |f| %>
-      <div class="p-6 rounded-lg bg-blue-50 shadow-lg border border-blue-200">
+    <%= form_with model: @day, html: { novalidate: true } do |f| %>
+      <div class="px-6 py-4 rounded-lg bg-blue-50 shadow-lg border border-blue-100">
         <h3 class="text-2xl font-bold mb-4 text-indigo-500">Daily Goals</h3>
         <div class="flex space-x-4">
           <div class="flex flex-col flex-1">
-            <%= f.label :calorie_goal, "Calorie Goal (kcal)", class: "font-medium text-gray-700" %>
+            <%= f.label :calorie_goal, "Calorie Goal (kcal)", class: "font-medium text-gray-700 mb-2" %>
             <%= f.number_field :calorie_goal,
               step: 100,
               class: "rounded border border-gray-300 p-2 bg-gray-50",
@@ -21,7 +22,7 @@
           </div>
 
           <div class="flex flex-col flex-1">
-            <%= f.label :protein_goal, "Protein Goal (g)", class: "font-medium text-gray-700" %>
+            <%= f.label :protein_goal, "Protein Goal (g)", class: "font-medium text-gray-700 mb-2" %>
             <%= f.number_field :protein_goal,
               step: 10,
               class: "rounded border border-gray-300 p-2 bg-gray-50",
@@ -32,56 +33,65 @@
     <% end %>
 
     <!-- summary -->
-    <div class="p-6 rounded-lg bg-violet-100 border border-violet-200">
-      <div class="flex items-center justify-center gap-8">
-        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border-gray-100 flex flex-col items-center">
-          <h4 class="font-sans font-medium text-lg text-gray-800">Calories</h4>
-          <%= donut_chart(
-            { "Calories" => @day.meals.sum(:calories), "Remaining" => [@day.calorie_goal - @day.meals.sum(:calories), 0].max },
-            {
-              height: '200px',
-              width: '200px',
-              class: 'box',
-              options: {
-                tooltip: { show: false },
-                animation: false,
-                color: ['rgb(255, 172, 28)', 'rgb(0, 0, 0, 0.075)'],
-                series: {
-                  labelLine: { show: false },
-                  label: { show: false },
-                  emphasis: { disabled: true },
-                }
+    <div class="p-6 rounded-lg bg-violet-100 border border-violet-200 flex items-center justify-center gap-8 shadow-inner">
+      <div class="p-4 bg-gray-50 rounded-lg shadow-inner border-gray-100 flex flex-col items-center">
+        <h4 class="font-sans font-bold text-xl text-gray-800">Calories</h4>
+        <%= donut_chart(
+          { "Calories" => @total_calories, "Remaining" => [@day.calorie_goal - @total_calories, @total_calories <= 0 ? 1 : 0].max },
+          {
+            height: '200px',
+            width: '200px',
+            class: 'box',
+            options: {
+              tooltip: { show: false },
+              animation: false,
+              color: ['rgb(255, 172, 28)', 'rgb(0, 0, 0, 0.075)'],
+              series: {
+                labelLine: { show: false },
+                label: { show: false },
+                emphasis: { disabled: true },
               }
             }
-          ) %>
-          <p class="font-sans font-medium text-md text-gray-800">
-            <%= @day.meals.sum(:calories) %> / <%= @day.calorie_goal %> kcal
-          </p>
-        </div>
-        <div class="p-4 bg-gray-50 rounded-lg shadow-inner border border-gray-100 flex flex-col items-center">
-          <h4 class="font-sans font-medium text-lg text-gray-800">Protein</h4>
-          <%= donut_chart(
-            { "Protein" => @day.meals.sum(:protein), "Remaining" => [@day.protein_goal - @day.meals.sum(:protein), 0].max },
-            {
-              height: '200px',
-              width: '200px',
-              class: 'box',
-              options: {
-                tooltip: { show: false },
-                animation: false,
-                color: ['rgb(80, 200, 120)', 'rgb(0, 0, 0, 0.075)'],
-                series: {
-                  labelLine: { show: false },
-                  label: { show: false },
-                  emphasis: { disabled: true },
-                }
+          }
+        ) %>
+        <p class="font-sans font-medium text-md text-gray-800">
+          <%= @total_calories %> / <%= @day.calorie_goal %> kcal
+        </p>
+      </div>
+      <div class="p-4 bg-gray-50 rounded-lg shadow-inner border border-gray-100 flex flex-col items-center">
+        <h4 class="font-sans font-bold text-xl text-gray-800">Protein</h4>
+        <%= donut_chart(
+          { "Protein" => @total_protein, "Remaining" => [@day.protein_goal - @total_protein, @total_protein <= 0 ? 1 : 0].max },
+          {
+            height: '200px',
+            width: '200px',
+            class: 'box',
+            options: {
+              tooltip: { show: false },
+              animation: false,
+              color: ['rgb(80, 200, 120)', 'rgb(0, 0, 0, 0.075)'],
+              series: {
+                labelLine: { show: false },
+                label: { show: false },
+                emphasis: { disabled: true },
               }
             }
-          ) %>
-          <p class="font-sans font-medium text-md text-gray-800">
-            <%= @day.meals.sum(:protein) %> / <%= @day.protein_goal %> g
-          </p>
-        </div>
+          }
+        ) %>
+        <p class="font-sans font-medium text-md text-gray-800">
+          <%= @total_protein %> / <%= @day.protein_goal %> g
+        </p>
+      </div>
+    </div>
+    <div class="px-6 py-4 rounded-lg bg-gray-100 shadow-lg border border-gray-200">
+      <div class="mb-4 pb-4 border-b border-gray-300 flex justify-between items-center">
+        <h3 class="text-2xl font-bold text-gray-800">Meals</h3>
+        <%= button_to "+ Add Meal", add_meal_day_path(@day), method: :post, class: "font-sans text-md font-semibold text-gray-100 cursor-pointer px-4 py-2 bg-indigo-500 rounded-lg"%>
+      </div>
+      <div class="space-y-4">
+        <% @day.meals.order(created_at: :desc).each do |meal| %>
+          <%= render partial: "meal", locals: { meal: meal, day: @day } %>
+        <% end %>
       </div>
     </div>
   </div>
