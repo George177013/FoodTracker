@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_11_182300) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_22_163240) do
   create_table "days", force: :cascade do |t|
     t.date "date", null: false
-    t.integer "calorie_goal"
-    t.integer "protein_goal"
+    t.integer "calorie_goal", default: 0, null: false
+    t.integer "protein_goal", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
@@ -23,8 +23,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_11_182300) do
 
   create_table "meals", force: :cascade do |t|
     t.string "name"
-    t.integer "calories", default: 0
-    t.integer "protein", default: 0
+    t.integer "calories", default: 0, null: false
+    t.integer "protein", default: 0, null: false
     t.integer "day_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
